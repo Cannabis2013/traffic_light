@@ -7,6 +7,7 @@ add_executable(TrafficLight main.c
     wait.c
     ard_m328p_states.h
     ard_m328p_ports.h
+    ard_m328p_states.c
 )
 
 
