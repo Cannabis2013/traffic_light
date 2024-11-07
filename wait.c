@@ -11,8 +11,8 @@ void wait_ms(int ms){
 
 void wait_sec(int s)
 {
-    long limit = s * CLOCK_SPEED;
-    while (limit) limit -= 1;
+    volatile long limit = s * CLOCK_SPEED;
+    while (limit)limit -= 1;
 }
 
 #endif

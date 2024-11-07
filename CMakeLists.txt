@@ -5,7 +5,10 @@ project(TrafficLight LANGUAGES C)
 add_executable(TrafficLight main.c
     wait.h
     wait.c
-    bit_states.h)
+    bit_states.h
+)
+
+
 
 include(GNUInstallDirs)
 install(TARGETS TrafficLight
