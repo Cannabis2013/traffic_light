@@ -5,8 +5,10 @@ project(TrafficLight LANGUAGES C)
 add_executable(TrafficLight main.c
     wait.h
     wait.c
-    ard_m328p_states.h
+    controller.h
     ard_m328p_ports.h
+    controller_imp1.c
+    controller_imp2.c
 )
 
 
