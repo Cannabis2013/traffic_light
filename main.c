@@ -1,10 +1,6 @@
+#include "ard_m328p_ports.h"
+#include "ard_m328p_states.h"
 #include "wait.h"
-#include "bit_states.h"
-
-typedef unsigned char byte;
-
-#define D_PORTS *((volatile byte*) 0x2b)
-#define D_DIRS *((volatile byte*) 0x2a)
 
 int main(){
     D_DIRS  = ACT;

@@ -1,5 +1,5 @@
-#ifndef BIT_STATES_H
-#define BIT_STATES_H
+#ifndef ARD_M328P_STATES_H
+#define ARD_M328P_STATES_H
 
 /* Codes:
  *  gyrgyr--
@@ -26,4 +26,4 @@
 #define S7      0b01100100
 #define S8      0b11111100  // Testing purposes
 
-#endif // BIT_STATES_H
+#endif // ARD_M328P_STATES_H

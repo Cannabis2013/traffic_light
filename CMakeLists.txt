@@ -5,7 +5,8 @@ project(TrafficLight LANGUAGES C)
 add_executable(TrafficLight main.c
     wait.h
     wait.c
-    bit_states.h
+    ard_m328p_states.h
+    ard_m328p_ports.h
 )
 
 
