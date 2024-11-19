@@ -1,0 +1,7 @@
+#ifndef TRAFFIC_CONTROLLER_H
+#define TRAFFIC_CONTROLLER_H
+
+#define CONTROLLER_IMP_2
+void t_run();
+
+#endif // TRAFFIC_CONTROLLER_H
