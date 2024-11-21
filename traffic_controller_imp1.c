@@ -49,7 +49,7 @@ void _t_cyclus(){
     wait_sec(2);
 }
 
-void t_run(){
+void traffic_light(){
     _t_init();
     while (1) _run_cyclus();
 }

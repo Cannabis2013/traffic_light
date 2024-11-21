@@ -1,67 +1,78 @@
 #include "wait.h"
 
 #ifdef WAIT_IMP_2
-
 #include "ard_m328p_defines.h"
+
+#define HALF_SECOND     1
+#define ONE_SECOND      2
+#define TWO_SECOND      4
+#define FOUR_SECOND     8
+#define H_SECOND        16
 
 void wait_ms(int ms){}
 void wait_sec(int s){}
-void _disable();
 
-// AVR status register
-#define I_BIT               (1 << 7)
-// MCU status register
-#define WDRF                (1 << 3)
-// Watchdog timer control register
-#define WDIF                (1 << 7)
-#define WDIE                (1 << 6)
-#define WDP3                (1 << 5)
-#define WDCE                (1 << 4)
-#define WDE                 (1 << 3)
-#define WDP2                (1 << 2)
-#define WDP1                (1 << 1)
-#define WDP0                (1 << 0)
-
-volatile int _time_out = 0;
-
-void _set_time_out(){
-    D_PORTS_OUT = 0b11111100;
-    volatile long index = 350000;
-    while (index >= 0) index -= 1;
+void _set_interrupt(){
+    WDTCSR = WDIE;
 }
 
-void _poll();
-
-void init_wait(){
-    M_STA &= ~WDRF; // Reset
-    W_TIMER = WDIE | WDCE | (W_TIMER & ~WDE);
+void _set_prescale_units(int mode){
+    volatile byte scales;
+    if(mode == 16)
+        scales = WDE | WDP1 | WDP0;
+    else if(mode == 1)
+        scales = WDE | WDP2 | WDP0;
+    else if(mode == 2)
+        WDTCSR = WDE | WDP2 | WDP1;
+    else if(mode == 4)
+        scales = WDE | WDP2 | WDP1 | WDP0;
+    else if(mode == 8)
+        scales = WDE | WDP3;
+    else
+        scales = WDE | WDP2 | WDP1;
+    WDTCSR = WDCE | WDE;
+    WDTCSR = scales;
 }
 
-void _set_prescale_units(){
-    W_TIMER |= WDCE | WDE;
-    W_TIMER = WDE | WDP2 | WDP1;
-}
-
-void _disable(){
-    A_STA &= ~I_BIT;
-    M_STA &= ~WDRF; // Reset
-    W_TIMER |= WDCE | WDE;
-    W_TIMER = 0x00;
-    A_STA |= I_BIT;
+void _reset_wdt(){
+    MCUSR &= ~WDRF; // Reset
+    WDTCSR |= WDCE;
+    WDTCSR = 0;
 }
 
 void _poll(){
     volatile byte b = 0;
-    while (!b) b = W_TIMER & WDIF;
+    while (!b) b = WDTCSR & WDIF;
+}
+
+void _wdt_wait(int mode){
+    _reset_wdt();
+    _set_prescale_units(mode);
+    _set_interrupt();
+    _poll();
+}
+
+// Public functions
+
+void wait_4s(){
+    _wdt_wait(FOUR_SECOND);
+}
+
+void wait_2s(){
+    _wdt_wait(TWO_SECOND);
 }
 
 void wait_1s(){
-    A_STA &= ~I_BIT;
-    M_STA &= ~WDRF; // Reset
-    _set_prescale_units();
-    A_STA |= I_BIT;
-    _poll();
-    _disable();
+    _wdt_wait(ONE_SECOND);
+}
+
+void wait_500ms(){
+    _wdt_wait(HALF_SECOND);
+}
+
+void wait_125ms()
+{
+    _wdt_wait(H_SECOND);
 }
 
 #endif

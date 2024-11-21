@@ -12,6 +12,7 @@ DUDE=avrdude -p ${DEV} -c ${MAN} -P ${PORT} -b ${RATE} -D -U
 deploy: main.hex
 	${DUDE} flash:w:$^:i
 	rm *.o *.hex
+hex: main.hex
 main.hex: install
 install: program.o
 	${HEXER} ${HFLAGS} program.o main.hex

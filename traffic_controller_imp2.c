@@ -16,67 +16,67 @@
 #define WE_WLK_GRE (1 << 3)
 
 void _t_init(){
-    B_DIRS = 0b00001111;
-    D_DIRS = 0b11111100;
+    DDRB = 0b00001111;
+    DDRD = 0b11111100;
 }
 
 void _init_state(){
-    B_PORTS_OUT |= WE_WLK_GRE;
-    B_PORTS_OUT |= NS_WLK_RED;
-    D_PORTS_OUT  |= WE_CAR_GRE;
-    D_PORTS_OUT |= NS_CAR_RED;
+    PORTB |= WE_WLK_GRE;
+    PORTB |= NS_WLK_RED;
+    PORTD  |= WE_CAR_GRE;
+    PORTD |= NS_CAR_RED;
 }
 
 void _change_to_ns(){
-    B_PORTS_OUT &= ~WE_WLK_GRE;
-    B_PORTS_OUT |= WE_WLK_RED;
-    wait_ms(750);
-    D_PORTS_OUT &= ~WE_CAR_GRE;
-    D_PORTS_OUT |= WE_CAR_YEL;
-    wait_sec(2);
-    D_PORTS_OUT &= ~WE_CAR_YEL;
-    D_PORTS_OUT |= WE_CAR_RED;
-    wait_ms(750);
-    B_PORTS_OUT &= ~NS_WLK_RED;
-    B_PORTS_OUT |= NS_WLK_GRE;
-    wait_ms(750);
-    D_PORTS_OUT |= NS_CAR_YEL;
-    wait_sec(2);
-    D_PORTS_OUT &= ~(NS_CAR_RED | NS_CAR_YEL);
-    D_PORTS_OUT |= NS_CAR_GRE;
+    PORTB &= ~WE_WLK_GRE;
+    PORTB |= WE_WLK_RED;
+    wait_500ms();
+    PORTD &= ~WE_CAR_GRE;
+    PORTD |= WE_CAR_YEL;
+    wait_2s();
+    PORTD &= ~WE_CAR_YEL;
+    PORTD |= WE_CAR_RED;
+    wait_500ms();
+    PORTB &= ~NS_WLK_RED;
+    PORTB |= NS_WLK_GRE;
+    wait_500ms();
+    PORTD |= NS_CAR_YEL;
+    wait_2s();
+    PORTD &= ~(NS_CAR_RED | NS_CAR_YEL);
+    PORTD |= NS_CAR_GRE;
 }
 
 void _change_to_we(){
-    B_PORTS_OUT &= ~NS_WLK_GRE;
-    B_PORTS_OUT |= NS_WLK_RED;
-    wait_ms(750);
-    D_PORTS_OUT &= ~NS_CAR_GRE;
-    D_PORTS_OUT |= NS_CAR_YEL;
-    wait_sec(2);
-    D_PORTS_OUT &= ~NS_CAR_YEL;
-    D_PORTS_OUT |= NS_CAR_RED;
-    wait_ms(750);
-    B_PORTS_OUT &= ~WE_WLK_RED;
-    B_PORTS_OUT |= WE_WLK_GRE;
-    wait_ms(750);
-    D_PORTS_OUT |= WE_CAR_YEL;
-    wait_sec(2);
-    D_PORTS_OUT &= ~(WE_CAR_RED | WE_CAR_YEL);
-    D_PORTS_OUT |= WE_CAR_GRE;
+    PORTB &= ~NS_WLK_GRE;
+    PORTB |= NS_WLK_RED;
+    wait_500ms();
+    PORTD &= ~NS_CAR_GRE;
+    PORTD |= NS_CAR_YEL;
+    wait_2s();
+    PORTD &= ~NS_CAR_YEL;
+    PORTD |= NS_CAR_RED;
+    wait_500ms();
+    PORTB &= ~WE_WLK_RED;
+    PORTB |= WE_WLK_GRE;
+    wait_500ms();
+    PORTD |= WE_CAR_YEL;
+    wait_2s();
+    PORTD &= ~(WE_CAR_RED | WE_CAR_YEL);
+    PORTD |= WE_CAR_GRE;
 }
 
 void _run_cyclus(){
     _init_state();
     for (int i = 0; i < 2; ++i) {
-        wait_sec(4);
+        wait_4s();
         _change_to_ns();
-        wait_sec(4);
+        wait_4s();
         _change_to_we();
     }
-    wait_sec(4);
+    wait_4s();
 }
 
-void t_run(){
+void traffic_light(){
     _t_init();
     while (1) _run_cyclus();
 }

@@ -1,8 +1,6 @@
-#include "test.h"
-#include "wait.h"
+#include "traffic_controller.h"
 
 int main(){
-    volatile long index = 350000;
-    while (index) index--;
-    run_test();
+    traffic_light();
+    return 0;
 }

@@ -15,8 +15,9 @@ add_executable(TrafficLight main.c
     test.h
     test.c
     iom328p.h
+    interrupt_raw.c
+    interrupt_raw.h
 )
-
 
 
 include(GNUInstallDirs)
