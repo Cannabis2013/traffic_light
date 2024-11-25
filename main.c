@@ -1,6 +1,6 @@
-#include "traffic_controller.h"
+#include "test.h"
 
 int main(){
-    traffic_light();
+    test();
     return 0;
 }

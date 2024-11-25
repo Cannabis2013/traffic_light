@@ -23,7 +23,7 @@ void _set_prescale_units(int mode){
     else if(mode == 1)
         scales = WDE | WDP2 | WDP0;
     else if(mode == 2)
-        WDTCSR = WDE | WDP2 | WDP1;
+        scales = WDE | WDP2 | WDP1;
     else if(mode == 4)
         scales = WDE | WDP2 | WDP1 | WDP0;
     else if(mode == 8)
